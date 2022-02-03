@@ -12,8 +12,8 @@ if(NOT DEFINED $ENV{LLVM_BUILD_DIR})
 endif()
 
 include_directories(
-    -I$ENV{LLVM_BUILD_DIR}/include
-    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+    $ENV{LLVM_BUILD_DIR}/include
+    $ENV{LLVM_BUILD_DIR}/include/c++/v1
     )
 add_compile_options(
     -stdlib=libc++
