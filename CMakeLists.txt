@@ -35,14 +35,13 @@ add_library(xc++ STATIC IMPORTED)
 set_property(TARGET xc++ PROPERTY
     IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
 
-add_compile_options(
-    -stdlib=libc++
-    -fsanitize=memory
-    -I$ENV{LLVM_BUILD_DIR}/include
-    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+include_directories(-I$ENV{LLVM_BUILD_DIR}/include -I$ENV{LLVM_BUILD_DIR}/include/c++/v1)
+add_compile_options(-stdlib=libc++ -fsanitize=memory)
+
+target_link_directories(test_foo PRIVATE
+    $ENV{LLVM_BUILD_DIR}/lib
     )
-add_link_options(
-    -L$ENV{LLVM_BUILD_DIR}/lib
+target_link_options(test_foo PRIVATE
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
     -fsanitize=memory
     -fsanitize-memory-track-origins
