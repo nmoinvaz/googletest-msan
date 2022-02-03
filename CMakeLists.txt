@@ -19,7 +19,6 @@ include_directories(
 add_compile_options(
     -stdlib=libc++
     -fsanitize=memory
-    -fsanitize-memory-track-origins
     -g
     )
 link_directories($ENV{LLVM_BUILD_DIR}/lib)
@@ -57,11 +56,8 @@ target_link_options(test_foo PRIVATE
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
     -stdlib=libc++
     -lc++abi
-    -lc++
     -fsanitize=memory
     -fsanitize-memory-track-origins
-    -fno-optimize-sibling-calls
-    -fno-omit-frame-pointer
     -g
     )
 
