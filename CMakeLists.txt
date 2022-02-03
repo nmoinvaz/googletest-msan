@@ -58,4 +58,4 @@ target_link_libraries(test_foo gtest gtest_main)
 
 enable_testing()
 
-add_test(NAME test_foo COMMAND $<TARGET_FILE:test>)
+add_test(NAME test_foo COMMAND $<TARGET_FILE:test_foo>)
