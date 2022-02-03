@@ -43,10 +43,6 @@ macro(configure_cxx_msan target)
         -I$ENV{LLVM_BUILD_DIR}/include
         -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
         )
-    target_link_directories(${target} PRIVATE
-        $ENV{LLVM_BUILD_DIR}/lib
-        )
-    target_link_libraries(${target} xc++abi xc++)
     target_link_options(${target} PRIVATE
         -L$ENV{LLVM_BUILD_DIR}/lib
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
@@ -63,7 +59,7 @@ configure_cxx_msan(test_foo)
 configure_cxx_msan(gtest_main)
 configure_cxx_msan(gtest)
 
-target_link_libraries(test_foo gtest gtest_main)
+target_link_libraries(test_foo gtest gtest_main xc++abi xc++)
 
 enable_testing()
 
