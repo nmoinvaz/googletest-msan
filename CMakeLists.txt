@@ -21,7 +21,6 @@ add_compile_options(
     -fsanitize=memory
     -g
     )
-link_directories($ENV{LLVM_BUILD_DIR}/lib)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL
@@ -44,6 +43,9 @@ project(test_foo CXX)
 
 add_executable(test_foo test.cc)
 
+target_link_directories(test_foo PRIVATE
+    $ENV{LLVM_BUILD_DIR}/lib
+    )
 target_link_options(test_foo PRIVATE
     -stdlib=libc++
     -lc++abi
