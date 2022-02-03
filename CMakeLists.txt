@@ -25,9 +25,9 @@ if(NOT googletest_POPULATED)
   add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-project(test CXX)
+project(test_foo CXX)
 
-add_executable(test test.cc)
+add_executable(test_foo test.cc)
 
 macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
@@ -50,11 +50,11 @@ macro(configure_cxx_msan target)
         )
 endmacro()
 
-configure_cxx_msan(test)
+configure_cxx_msan(test_foo)
 configure_cxx_msan(gtest_main)
 configure_cxx_msan(gtest)
 
-target_link_libraries(test gtest gtest_main)
+target_link_libraries(test_foo gtest gtest_main)
 
 enable_testing()
 
