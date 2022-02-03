@@ -33,12 +33,14 @@ target_link_options(test PRIVATE
     -stdlib=libc++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
+    -fsanitize=memory
     )
 target_compile_options(test PRIVATE
+    -fsanitize=memory
     -stdlib=libc++
     -I$ENV{LLVM_BUILD_DIR}/include
     -I$ENV{LLVM_BUILD_DIR}/include/c++/v1)
 
-target_link_libraries(gtest_test test gtest_main)
+target_link_libraries(test gtest_main)
 
-add_test(NAME gtest_test COMMAND $<TARGET_FILE:gtest_test>)
+add_test(NAME test COMMAND $<TARGET_FILE:test>)
