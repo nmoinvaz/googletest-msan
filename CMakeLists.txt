@@ -42,6 +42,7 @@ macro(configure_cxx_msan target)
         -stdlib=libc++
         -lc++abi
         -lc++
+        -static
         -fsanitize=memory
         -fsanitize-memory-track-origins
         -fno-optimize-sibling-calls
