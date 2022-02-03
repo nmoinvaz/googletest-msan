@@ -53,8 +53,11 @@ set_property(TARGET xc++ PROPERTY
     IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
 
 target_link_options(test_foo PRIVATE
+    -stdlib=libc++
+    -L$ENV{LLVM_BUILD_DIR}/lib
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
+    -lc++
     -fsanitize=memory
     -fsanitize-memory-track-origins
     -fno-optimize-sibling-calls
