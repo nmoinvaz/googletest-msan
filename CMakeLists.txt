@@ -39,8 +39,7 @@ target_compile_options(test PRIVATE
 target_link_options(test PRIVATE
     -stdlib=libc++
     -L$ENV{LLVM_BUILD_DIR}/lib
-    -llibc++abi
-    -llibc++
+    -lc++abi
     -fsanitize=memory
     -fsanitize-memory-track-origins
     -fno-optimize-sibling-calls
