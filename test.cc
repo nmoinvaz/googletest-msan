@@ -8,9 +8,7 @@ TEST(FooTest, GoodFoo) {
 
 TEST(FooTest, BadFoo) {
   int uninitialized;
-  if (uninitialized) {
-    printf("uninitialized %d\n", uninitialized);
-  }
+  printf("uninitialized %d\n", uninitialized);
   EXPECT_GT(uninitialized, 5);
 }
 
