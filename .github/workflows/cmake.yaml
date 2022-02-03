@@ -27,7 +27,7 @@ jobs:
 
     - name: Generate project files
       run: |
-        cmake . -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+        cmake . -GNinja -DCMAKE_BUILD_TYPE=Release
       env:
         CC: clang-11
         CXX: clang++-11
