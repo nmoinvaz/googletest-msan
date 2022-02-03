@@ -31,15 +31,16 @@ add_executable(test test.cc)
 
 target_compile_options(test PRIVATE
     -fsanitize=memory
-    -stdlib=libc++
+    -stdlib=c++
     -I$ENV{LLVM_BUILD_DIR}/include
     -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
     )
 
 target_link_options(test PRIVATE
-    -stdlib=libc++
+    -stdlib=c++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
+    -lc++
     -fsanitize=memory
     -fsanitize-memory-track-origins
     -fno-optimize-sibling-calls
