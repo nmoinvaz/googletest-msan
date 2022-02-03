@@ -1,0 +1,38 @@
+name: CI CMake
+on: [push, pull_request]
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install packages
+      run: sudo apt-get install -y ninja-build
+
+    - name: Compile LLVM C++ libraries with MSAN
+      run: |
+        git clone --depth=1 https://github.com/llvm/llvm-project --single-branch --branch llvmorg-11.0.0
+        cd llvm-project
+        mkdir build
+        cd build
+        cmake -G Ninja ../llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DLLVM_USE_SANITIZER=MemoryWithOrigins -DLLVM_LIBC_ENABLE_LINTING=OFF
+        cmake --build . -- cxx cxxabi
+        echo "LLVM_BUILD_DIR=`pwd`" >> $GITHUB_ENV
+      env:
+        CC: clang
+        CXX: clang++
+
+    - name: Generate project files
+      run: cmake . -G Ninja -DCMAKE_BUILD_TYPE=Release
+      env:
+        CC: clang
+        CXX: clang++
+
+    - name: Compile source code
+      run: cmake --build . --config Release --verbose
+
+    - name: Run test cases
+      run: ctest --verbose -C Release --output-on-failure --max-width 120
+      env:
+        MSAN_OPTIONS: abort_on_error=0
