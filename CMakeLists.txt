@@ -39,6 +39,7 @@ target_compile_options(test PRIVATE
 
 target_link_options(test PRIVATE
     -stdlib=libc++
+    -lstdc++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
     -lc++
