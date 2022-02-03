@@ -6,7 +6,6 @@ enable_language(CXX)
 
 # Google test requires at least C++11
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL
@@ -38,15 +37,12 @@ set_property(TARGET xc++ PROPERTY
 
 macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
-        -fsanitize=memory
-        -stdlib=libc++
         -I$ENV{LLVM_BUILD_DIR}/include
         -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
         )
     target_link_options(${target} PRIVATE
         -L$ENV{LLVM_BUILD_DIR}/lib
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
-        -stdlib=libc++
         -fsanitize=memory
         -fsanitize-memory-track-origins
         -fno-optimize-sibling-calls
