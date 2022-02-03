@@ -8,6 +8,9 @@ TEST(FooTest, GoodFoo) {
 
 TEST(FooTest, BadFoo) {
   int uninitialized;
+  if (uninitialized) {
+    print("uninitialized %d\n", uninitialized);
+  }
   EXPECT_GT(uninitialized, 5);
 }
 
