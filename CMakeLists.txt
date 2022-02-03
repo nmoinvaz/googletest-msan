@@ -36,7 +36,6 @@ target_compile_options(test PRIVATE
     )
 
 target_link_options(test PRIVATE
-    -static
     -stdlib=libc++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
