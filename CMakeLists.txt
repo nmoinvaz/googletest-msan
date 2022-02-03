@@ -7,6 +7,19 @@ enable_language(CXX)
 # Google test requires at least C++11
 set(CMAKE_CXX_STANDARD 11)
 
+if(NOT DEFINED $ENV{LLVM_BUILD_DIR})
+    message(FATAL_ERROR "LLVM build directory must be specified")
+endif()
+
+include_directories(
+    -I$ENV{LLVM_BUILD_DIR}/include
+    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+    )
+add_compile_options(
+    -stdlib=libc++
+    -fsanitize=memory
+    )
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL
     "Use shared (DLL) run-time lib even when Google Test is built as static lib." FORCE)
@@ -25,15 +38,6 @@ if(NOT googletest_POPULATED)
 endif()
 
 project(test_foo CXX)
-
-include_directories(
-    -I$ENV{LLVM_BUILD_DIR}/include
-    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
-    )
-add_compile_options(
-    -stdlib=libc++
-    -fsanitize=memory
-    )
 
 add_executable(test_foo test.cc)
 
