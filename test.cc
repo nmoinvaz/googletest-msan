@@ -7,6 +7,11 @@ TEST(FooTest, GoodFoo) {
 }
 
 TEST(FooTest, BadFoo) {
+  int uninitialized;
+  EXPECT_GT(uninitialized, 5);
+}
+
+TEST(FooTest, BadFoo2) {
   int *uninitialized = new int[1];
   EXPECT_GT(uninitialized[0], 5);
 }

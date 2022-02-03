@@ -20,15 +20,11 @@ jobs:
         cmake --build . -- cxx cxxabi
         echo "LLVM_BUILD_DIR=`pwd`" >> $GITHUB_ENV
       env:
-        CC: clang-11
-        CXX: clang++-11
+        CC: clang
+        CXX: clang++
 
     - name: Generate project files
-      run: |
-        cmake . -GNinja -DCMAKE_BUILD_TYPE=Release
-      env:
-        CC: clang-11
-        CXX: clang++-11
+      run: cmake . -GNinja -DCMAKE_BUILD_TYPE=Release
 
     - name: Compile source code
       run: cmake --build . --config Release --verbose
