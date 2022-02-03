@@ -19,6 +19,7 @@ add_compile_options(
     -stdlib=libc++
     -fsanitize=memory
     )
+link_directories($ENV{LLVM_BUILD_DIR}/lib)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL
@@ -48,9 +49,6 @@ add_library(xc++ STATIC IMPORTED)
 set_property(TARGET xc++ PROPERTY
     IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
 
-target_link_directories(test_foo PRIVATE
-    $ENV{LLVM_BUILD_DIR}/lib
-    )
 target_link_options(test_foo PRIVATE
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
     -fsanitize=memory
