@@ -7,14 +7,8 @@ TEST(FooTest, GoodFoo) {
 }
 
 TEST(FooTest, BadFoo) {
-  int uninitialized __attribute((uninitialized));
-  EXPECT_GT(uninitialized, 5);
-}
-
-TEST(FooTest, BadFoo2) {
-  char *m = (char *)malloc(10);
-  EXPECT_GT(m[0], 5);
-  free(m);
+  int *uninitialized = new int[1];
+  EXPECT_GT(uninitialized[0], 5);
 }
 
 int main(int argc, char **argv) {
