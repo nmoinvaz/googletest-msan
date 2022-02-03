@@ -8,19 +8,12 @@ TEST(FooTest, GoodFoo) {
 
 TEST(FooTest, BadFoo) {
   int uninitialized;
-  printf("uninitialized %d\n", uninitialized);
   EXPECT_GT(uninitialized, 5);
 }
-/*
+
 TEST(FooTest, BadFoo2) {
   char *uninitialized = new char[1];
   EXPECT_GT(uninitialized[0], 5);
-}*/
-
-TEST(FooTest, BadFoo3) {
-  char *m = (char *)malloc(10);
-  EXPECT_GT(m[0], 5);
-  free(m);
 }
 
 int main(int argc, char **argv) {
