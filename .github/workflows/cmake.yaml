@@ -34,3 +34,5 @@ jobs:
 
     - name: Run test cases
       run: ctest --verbose -C Release --output-on-failure --max-width 120
+      env:
+        MSAN_OPTIONS: abort_on_error=0
