@@ -38,6 +38,7 @@ macro(configure_cxx_msan target)
         )
     target_link_options(${target} PRIVATE
         -L$ENV{LLVM_BUILD_DIR}/lib
+        -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -stdlib=libc++
         -lc++abi
         -lc++
@@ -45,7 +46,6 @@ macro(configure_cxx_msan target)
         -fsanitize-memory-track-origins
         -fno-optimize-sibling-calls
         -fno-omit-frame-pointer
-        -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -g
         )
 endmacro()
@@ -55,5 +55,7 @@ configure_cxx_msan(gtest_main)
 configure_cxx_msan(gtest)
 
 target_link_libraries(test gtest gtest_main)
+
+enable_testing()
 
 add_test(NAME test COMMAND $<TARGET_FILE:test>)
