@@ -35,27 +35,21 @@ add_library(xc++ STATIC IMPORTED)
 set_property(TARGET xc++ PROPERTY
     IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
 
-macro(configure_cxx_msan target)
-    target_compile_options(${target} PRIVATE
-        -stdlib=libc++
-        -fsanitize=memory
-        -I$ENV{LLVM_BUILD_DIR}/include
-        -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
-        )
-    target_link_options(${target} PRIVATE
-        -L$ENV{LLVM_BUILD_DIR}/lib
-        -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
-        -fsanitize=memory
-        -fsanitize-memory-track-origins
-        -fno-optimize-sibling-calls
-        -fno-omit-frame-pointer
-        -g
-        )
-endmacro()
-
-configure_cxx_msan(test_foo)
-configure_cxx_msan(gtest_main)
-configure_cxx_msan(gtest)
+add_compile_options(
+    -stdlib=libc++
+    -fsanitize=memory
+    -I$ENV{LLVM_BUILD_DIR}/include
+    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+    )
+add_link_options(
+    -L$ENV{LLVM_BUILD_DIR}/lib
+    -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
+    -fsanitize=memory
+    -fsanitize-memory-track-origins
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -g
+    )
 
 target_link_libraries(test_foo gtest gtest_main xc++abi xc++)
 
