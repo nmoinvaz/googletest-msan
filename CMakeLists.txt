@@ -46,7 +46,6 @@ add_executable(test_foo test.cc)
 
 target_link_options(test_foo PRIVATE
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
-    -stdlib=libc++
     -lc++abi
     -fsanitize=memory
     -fsanitize-memory-track-origins
