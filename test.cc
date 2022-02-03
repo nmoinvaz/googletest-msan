@@ -7,7 +7,7 @@ TEST(FooTest, GoodFoo) {
 }
 
 TEST(FooTest, BadFoo) {
-  int uninitialized;
+  int uninitialized __attribute((uninitialized));
   EXPECT_GT(uninitialized, 5);
 }
 
