@@ -7,7 +7,7 @@ enable_language(CXX)
 # Google test requires at least C++11
 set(CMAKE_CXX_STANDARD 11)
 
-if(NOT DEFINED $ENV{LLVM_BUILD_DIR})
+if(NOT DEFINED ENV{LLVM_BUILD_DIR})
     message(FATAL_ERROR "LLVM build directory must be specified")
 endif()
 
