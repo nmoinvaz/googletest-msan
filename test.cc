@@ -12,8 +12,14 @@ TEST(FooTest, BadFoo) {
 }
 
 TEST(FooTest, BadFoo2) {
-  int *uninitialized = new int[1];
+  char *uninitialized = new char[1];
   EXPECT_GT(uninitialized[0], 5);
+}
+
+TEST(FooTest, BadFoo3) {
+  char *m = (char *)malloc(10);
+  EXPECT_GT(m[0], 5);
+  free(m);
 }
 
 int main(int argc, char **argv) {
