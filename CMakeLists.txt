@@ -18,6 +18,7 @@ include_directories(
 add_compile_options(
     -stdlib=libc++
     -fsanitize=memory
+    -fsanitize-memory-track-origins
     )
 link_directories($ENV{LLVM_BUILD_DIR}/lib)
 

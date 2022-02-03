@@ -16,7 +16,7 @@ jobs:
         cd llvm-project
         mkdir build
         cd build
-        cmake -GNinja ../llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DLLVM_USE_SANITIZER=MemoryWithOrigins -DLLVM_LIBC_ENABLE_LINTING=OFF
+        cmake -G Ninja ../llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DLLVM_USE_SANITIZER=MemoryWithOrigins -DLLVM_LIBC_ENABLE_LINTING=OFF
         cmake --build . -- cxx cxxabi
         echo "LLVM_BUILD_DIR=`pwd`" >> $GITHUB_ENV
       env:
@@ -24,7 +24,7 @@ jobs:
         CXX: clang++
 
     - name: Generate project files
-      run: cmake . -GNinja -DCMAKE_BUILD_TYPE=Release
+      run: cmake . -G Ninja -DCMAKE_BUILD_TYPE=Release
       env:
         CC: clang
         CXX: clang++
