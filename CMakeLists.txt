@@ -31,14 +31,14 @@ add_executable(test test.cc)
 
 target_compile_options(test PRIVATE
     -fsanitize=memory
-    -stdlib=c++
+    -stdlib=libc++
     -D_GLIBCXX_USE_CXX11_ABI=0
     -I$ENV{LLVM_BUILD_DIR}/include
     -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
     )
 
 target_link_options(test PRIVATE
-    -stdlib=c++
+    -stdlib=libc++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
     -lc++
