@@ -14,6 +14,7 @@ TEST(FooTest, BadFoo) {
 TEST(FooTest, BadFoo2) {
   char *m = (char *)malloc(10);
   EXPECT_GT(m[0], 5);
+  free(m);
 }
 
 int main(int argc, char **argv) {
