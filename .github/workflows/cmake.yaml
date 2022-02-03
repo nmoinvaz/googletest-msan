@@ -1,0 +1,67 @@
+name: CI CMake
+on: [push, pull_request]
+jobs:
+  ci-cmake:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu Clang
+            os: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build llvm-11-tools
+
+    - name: Compile C++ libraries with MSAN
+      run: |
+        git clone --depth=1 https://github.com/llvm/llvm-project --single-branch --branch llvmorg-11.0.0
+        cd llvm-project
+        mkdir build
+        cd build
+        cmake -GNinja ../llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_INCLUDE_BENCHMARKS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_ENABLE_PROJECTS="clang;libc;libcxx;libcxxabi;compiler-rt" -DLLVM_LIBC_ENABLE_LINTING=OFF -DLLVM_ENABLE_EH=OFF -DLLVM_ENABLE_RTTI=ON -DLLVM_USE_SANITIZER=MemoryWithOrigins
+        cmake --build . -- cxx cxxabi
+        echo "LLVM_BUILD_DIR=`pwd`" >> $GITHUB_ENV
+      env:
+        CC: clang-11
+        CXX: clang++-11
+
+    - name: Generate project files
+      # Shared libraries turned off for qemu ppc* and sparc & reduce code coverage sources
+      run: |
+        cmake . -GNinja -DWITH_SANITIZER=Memory -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+      env:
+        CC: clang-11
+        CXX: clang++-11
+        CI: true
+
+    - name: Compile source code
+      run: |
+        cmake --build . --config Release --verbose
+
+    - name: Run test cases
+      run: |
+        ctest --verbose -C Release --output-on-failure --max-width 120 -j ${{ matrix.parallels-jobs || '6' }}
+      env:
+        ASAN_OPTIONS: ${{ matrix.asan-options || 'verbosity=0' }}:abort_on_error=1
+        MSAN_OPTIONS: ${{ matrix.msan-options || 'verbosity=0' }}:abort_on_error=1
+        TSAN_OPTIONS: ${{ matrix.tsan-options || 'verbosity=0' }}:abort_on_error=1
+        LSAN_OPTIONS: ${{ matrix.lsan-options || 'verbosity=0' }}:abort_on_error=1
+
+    - name: Upload build errors
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: ${{ matrix.name }} (cmake)
+        path: |
+          ${{ matrix.build-dir || '.' }}/CMakeFiles/CMakeOutput.log
+          ${{ matrix.build-dir || '.' }}/CMakeFiles/CMakeError.log
+          ${{ matrix.build-dir || '.' }}/Testing/Temporary/*
+        retention-days: 30
