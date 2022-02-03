@@ -32,6 +32,7 @@ add_executable(test test.cc)
 target_compile_options(test PRIVATE
     -fsanitize=memory
     -stdlib=c++
+    -D_GLIBCXX_USE_CXX11_ABI=0
     -I$ENV{LLVM_BUILD_DIR}/include
     -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
     )
