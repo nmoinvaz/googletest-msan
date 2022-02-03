@@ -11,11 +11,11 @@ TEST(FooTest, BadFoo) {
   printf("uninitialized %d\n", uninitialized);
   EXPECT_GT(uninitialized, 5);
 }
-
+/*
 TEST(FooTest, BadFoo2) {
   char *uninitialized = new char[1];
   EXPECT_GT(uninitialized[0], 5);
-}
+}*/
 
 TEST(FooTest, BadFoo3) {
   char *m = (char *)malloc(10);
