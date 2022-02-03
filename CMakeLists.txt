@@ -28,18 +28,25 @@ project(test CXX)
 
 add_executable(test test.cc)
 
+target_compile_options(test PRIVATE
+    -fsanitize=memory
+    -stdlib=libc++
+    -I$ENV{LLVM_BUILD_DIR}/include
+    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+    )
+
 target_link_options(test PRIVATE
     -static
     -stdlib=libc++
     -L$ENV{LLVM_BUILD_DIR}/lib
     -lc++abi
     -fsanitize=memory
+    -fsanitize-memory-track-origins
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
+    -g
     )
-target_compile_options(test PRIVATE
-    -fsanitize=memory
-    -stdlib=libc++
-    -I$ENV{LLVM_BUILD_DIR}/include
-    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1)
 
 target_link_libraries(test gtest_main)
 
