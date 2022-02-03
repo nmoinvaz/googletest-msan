@@ -8,6 +8,9 @@ enable_language(CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+set_property(GLOBAL PROPERTY CXX_EXCEPTIONS OFF)
+set_property(GLOBAL PROPERTY CXX_RTTI OFF)
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL
     "Use shared (DLL) run-time lib even when Google Test is built as static lib." FORCE)
@@ -33,9 +36,9 @@ macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
         -fsanitize=memory
         -stdlib=libc++
-        -fno-exceptions
         -I$ENV{LLVM_BUILD_DIR}/include
         -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+        cxx_noexcept
         )
     target_link_options(${target} PRIVATE
         -L$ENV{LLVM_BUILD_DIR}/lib
