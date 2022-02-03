@@ -30,9 +30,8 @@ project(test_foo CXX)
 add_executable(test_foo test.cc)
 
 macro(configure_cxx_msan target)
-    set_target_properties(${target} PROPERTIES
-        CXX_EXCEPTIONS OFF
-        CXX_RTTI OFF
+    target_compile_features(${target} PUBLIC
+        cxx_noexcept
         )
     target_compile_options(${target} PRIVATE
         -fsanitize=memory
