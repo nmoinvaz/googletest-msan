@@ -38,6 +38,7 @@ set_property(TARGET xc++ PROPERTY
 macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
         -stdlib=libc++
+        -fsanitize=memory
         -I$ENV{LLVM_BUILD_DIR}/include
         -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
         )
