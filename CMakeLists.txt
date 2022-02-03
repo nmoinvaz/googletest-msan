@@ -52,6 +52,7 @@ set_property(TARGET xc++ PROPERTY
 
 target_link_options(test_foo PRIVATE
     -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
+    -lc++abi
     -fsanitize=memory
     -fsanitize-memory-track-origins
     -fno-optimize-sibling-calls
@@ -59,7 +60,7 @@ target_link_options(test_foo PRIVATE
     -g
     )
 
-target_link_libraries(test_foo gtest gtest_main xc++abi xc++)
+target_link_libraries(test_foo gtest gtest_main)
 
 enable_testing()
 
