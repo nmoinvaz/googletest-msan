@@ -30,9 +30,11 @@ project(test_foo CXX)
 add_executable(test_foo test.cc)
 
 add_library(xc++abi STATIC IMPORTED)
-set_property(TARGET xc++abi PROPERTY IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++abi.a)
+set_property(TARGET xc++abi PROPERTY
+    IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++abi.a)
 add_library(xc++ STATIC IMPORTED)
-set_property(TARGET xc++ PROPERTY IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
+set_property(TARGET xc++ PROPERTY
+    IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
 
 macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
@@ -49,8 +51,6 @@ macro(configure_cxx_msan target)
         -L$ENV{LLVM_BUILD_DIR}/lib
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -stdlib=libc++
-        -lc++abi
-        -static
         -fsanitize=memory
         -fsanitize-memory-track-origins
         -fno-optimize-sibling-calls
