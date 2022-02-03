@@ -11,6 +11,7 @@ if(NOT DEFINED ENV{LLVM_BUILD_DIR})
     message(FATAL_ERROR "LLVM build directory must be specified")
 endif()
 
+# Must set compile and link options before fetching googletest
 include_directories(
     $ENV{LLVM_BUILD_DIR}/include
     $ENV{LLVM_BUILD_DIR}/include/c++/v1
@@ -19,6 +20,7 @@ add_compile_options(
     -stdlib=libc++
     -fsanitize=memory
     -fsanitize-memory-track-origins
+    -g
     )
 link_directories($ENV{LLVM_BUILD_DIR}/lib)
 
