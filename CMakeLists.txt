@@ -30,10 +30,15 @@ project(test CXX)
 add_executable(test test.cc)
 
 macro(configure_cxx_msan target)
-    target_link_options(${target} PRIVATE
+    target_compile_options(${target} PRIVATE
+        -fsanitize=memory
         -stdlib=libc++
-        -lstdc++
+        -I$ENV{LLVM_BUILD_DIR}/include
+        -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+        )
+    target_link_options(${target} PRIVATE
         -L$ENV{LLVM_BUILD_DIR}/lib
+        -stdlib=libc++
         -lc++abi
         -lc++
         -fsanitize=memory
@@ -42,12 +47,6 @@ macro(configure_cxx_msan target)
         -fno-omit-frame-pointer
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -g
-        )
-    target_compile_options(${target} PRIVATE
-        -fsanitize=memory
-        -stdlib=libc++
-        -I$ENV{LLVM_BUILD_DIR}/include
-        -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
         )
 endmacro()
 
