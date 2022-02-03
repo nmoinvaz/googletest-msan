@@ -49,7 +49,6 @@ target_link_options(test_foo PRIVATE
     -lc++abi
     -fsanitize=memory
     -fsanitize-memory-track-origins
-    -g
     )
 
 target_link_libraries(test_foo gtest gtest_main)
