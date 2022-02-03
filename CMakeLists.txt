@@ -26,6 +26,15 @@ endif()
 
 project(test_foo CXX)
 
+include_directories(
+    -I$ENV{LLVM_BUILD_DIR}/include
+    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+    )
+add_compile_options(
+    -stdlib=libc++
+    -fsanitize=memory
+    )
+
 add_executable(test_foo test.cc)
 
 add_library(xc++abi STATIC IMPORTED)
@@ -34,9 +43,6 @@ set_property(TARGET xc++abi PROPERTY
 add_library(xc++ STATIC IMPORTED)
 set_property(TARGET xc++ PROPERTY
     IMPORTED_LOCATION $ENV{LLVM_BUILD_DIR}/lib/libc++.a)
-
-include_directories(-I$ENV{LLVM_BUILD_DIR}/include -I$ENV{LLVM_BUILD_DIR}/include/c++/v1)
-add_compile_options(-stdlib=libc++ -fsanitize=memory)
 
 target_link_directories(test_foo PRIVATE
     $ENV{LLVM_BUILD_DIR}/lib
