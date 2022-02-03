@@ -43,8 +43,8 @@ macro(configure_cxx_msan target)
         -L$ENV{LLVM_BUILD_DIR}/lib
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -stdlib=libc++
-        -l$ENV{LLVM_BUILD_DIR}/libc++abi.a
-        -l$ENV{LLVM_BUILD_DIR}/libc++.a
+        -l$ENV{LLVM_BUILD_DIR}/lib/libc++abi.a
+        -l$ENV{LLVM_BUILD_DIR}/lib/libc++.a
         -static
         -fsanitize=memory
         -fsanitize-memory-track-origins
