@@ -56,6 +56,9 @@ macro(configure_cxx_msan target)
         )
 endmacro()
 
+string(REGEX REPLACE "-fexceptions" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+
 configure_cxx_msan(test_foo)
 configure_cxx_msan(gtest_main)
 configure_cxx_msan(gtest)
