@@ -29,28 +29,32 @@ project(test CXX)
 
 add_executable(test test.cc)
 
-target_compile_options(test PRIVATE
-    -fsanitize=memory
-    -stdlib=libc++
-    -D_GLIBCXX_USE_CXX11_ABI=0
-    -I$ENV{LLVM_BUILD_DIR}/include
-    -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
-    )
+macro(configure_cxx_msan target)
+    target_link_options(${target} PRIVATE
+        -stdlib=libc++
+        -lstdc++
+        -L$ENV{LLVM_BUILD_DIR}/lib
+        -lc++abi
+        -lc++
+        -fsanitize=memory
+        -fsanitize-memory-track-origins
+        -fno-optimize-sibling-calls
+        -fno-omit-frame-pointer
+        -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
+        -g
+        )
+    target_compile_options(${target} PRIVATE
+        -fsanitize=memory
+        -stdlib=libc++
+        -I$ENV{LLVM_BUILD_DIR}/include
+        -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
+        )
+endmacro()
 
-target_link_options(test PRIVATE
-    -stdlib=libc++
-    -lstdc++
-    -L$ENV{LLVM_BUILD_DIR}/lib
-    -lc++abi
-    -lc++
-    -fsanitize=memory
-    -fsanitize-memory-track-origins
-    -fno-optimize-sibling-calls
-    -fno-omit-frame-pointer
-    -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
-    -g
-    )
+configure_cxx_msan(test)
+configure_cxx_msan(gtest_main)
+configure_cxx_msan(gtest)
 
-target_link_libraries(test gtest_main)
+target_link_libraries(test gtest gtest_main)
 
 add_test(NAME test COMMAND $<TARGET_FILE:test>)
