@@ -8,9 +8,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install packages
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ninja-build llvm-11-tools
+      run: sudo apt-get install -y ninja-build llvm-11-tools
 
     - name: Compile LLVM C++ libraries with MSAN
       run: |

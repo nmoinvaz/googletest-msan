@@ -36,7 +36,6 @@ macro(configure_cxx_msan target)
     target_compile_options(${target} PRIVATE
         -fsanitize=memory
         -stdlib=libc++
-        -fno-exceptions
         -I$ENV{LLVM_BUILD_DIR}/include
         -I$ENV{LLVM_BUILD_DIR}/include/c++/v1
         )
@@ -44,10 +43,9 @@ macro(configure_cxx_msan target)
         -L$ENV{LLVM_BUILD_DIR}/lib
         -Wl,-rpath,$ENV{LLVM_BUILD_DIR}/lib
         -stdlib=libc++
-        -lc++abi
-        -lc++
+        -l$ENV{LLVM_BUILD_DIR}/libc++abi.a
+        -l$ENV{LLVM_BUILD_DIR}/libc++.a
         -static
-        -fno-exceptions
         -fsanitize=memory
         -fsanitize-memory-track-origins
         -fno-optimize-sibling-calls
